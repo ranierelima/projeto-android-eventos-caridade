@@ -39,7 +39,7 @@ public class SharedPreferencesFactory {
         return getInstance(context).getString(preferenceName, defaultValue);
     }
 
-    public void remove(Context context, String chave){
+    public static void remove(Context context, String chave){
         SharedPreferences sharedPreferences = getInstance(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(chave);
