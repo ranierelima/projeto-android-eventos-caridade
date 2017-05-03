@@ -14,13 +14,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.erroronserver.eventosdecaridade.adapter.ListaEventosAdapter;
+import com.erroronserver.eventosdecaridade.controller.EventosController;
+import com.erroronserver.eventosdecaridade.model.Evento;
+import com.erroronserver.eventosdecaridade.model.ResponseJSON;
 import com.erroronserver.eventosdecaridade.service.LoginService;
 import com.erroronserver.eventosdecaridade.util.Constantes;
 import com.erroronserver.eventosdecaridade.util.SharedPreferencesFactory;
+import com.erroronserver.eventosdecaridade.util.VerificaConexao;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,10 +45,13 @@ public class MainActivity extends AppCompatActivity
 
     private String responseJSON;
 
+    @BindView(R.id.lv_eventos)
+    ListView listaEventos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,11 +75,42 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        new GetEventosHTTP().execute();
+       /* boolean temConexao = new VerificaConexao(MainActivity.this).verificaConexao();
+        if(temConexao){
+            excluirEventos();
+        }else{
+            List<Evento> eventos = Evento.listAll(Evento.class);
+            EventosController.getInstance().setListaEventos(eventos);
+            listaEventos.setAdapter(new ListaEventosAdapter(eventos, this));
+        }*/
     }
 
 
     private void tratarEventos() {
 
+        Gson gson = new Gson();
+        ArrayList<Evento> eventos = (ArrayList<Evento>) gson.fromJson(this.responseJSON, new TypeToken<List<Evento>>() {
+        }.getType());
+
+//        salvaListaEmBanco(eventos);
+        EventosController.getInstance().setListaEventos(eventos);
+        listaEventos.setAdapter(new ListaEventosAdapter(eventos, this));
+    }
+
+    private void salvaListaEmBanco(ArrayList<Evento> eventos) {
+        for (Evento e : eventos){
+            e.save();
+        }
+    }
+
+
+    private void excluirEventos() {
+        List<Evento> eventos = Evento.listAll(Evento.class);
+        for (Evento e : eventos){
+            e.delete();
+        }
     }
 
     @Override
@@ -120,6 +167,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private class GetEventosHTTP extends AsyncTask<Void, Void, Response> {
 
         OkHttpClient client = null;
@@ -137,7 +185,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Response doInBackground(Void... params) {
             try {
-                Response response = client.newCall(request).execute();
+                    Response response = client.newCall(request).execute();
                 return response;
             }catch (IOException e){
                 return null;

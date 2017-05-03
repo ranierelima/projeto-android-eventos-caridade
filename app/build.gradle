@@ -38,6 +38,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
 //    Butterknife: Biblioteca para injeçao de view
     compile 'com.jakewharton:butterknife:8.1.0'
+    compile 'com.github.satyan:sugar:1.4'
 //    Picasso: Biblioteca para carregamento de imagens na Web
     compile 'com.squareup.picasso:picasso:2.5.2'
 //    Firebase: Biblioteca(s) para o(s) serviço(s) do Firebase

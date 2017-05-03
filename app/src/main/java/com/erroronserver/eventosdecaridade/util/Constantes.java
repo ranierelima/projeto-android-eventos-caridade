@@ -10,4 +10,5 @@ public class Constantes {
     public static final String URL_EVENTOS = "http://ranieredelima.esy.es/testeEventos.php";
     public static final String PREF_FILE_NAME = "EventoCaridadeCONFIG";
     public static final String TOKEN = "TokenApp";
+    public static final String INTENT_EVENTO = "idEvento";
 }

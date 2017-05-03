@@ -10,4 +10,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.erroronserver.eventosdecaridade.MarcarColetaActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Deseja marcar uma coleta de roupas em seu endereço"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="" />
+
 </RelativeLayout>

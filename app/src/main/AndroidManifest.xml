@@ -4,6 +4,7 @@
     package="com.erroronserver.eventosdecaridade">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon">
+        tools:replace="android:icon"
+        android:name="com.orm.SugarApp">
+
+        <meta-data android:name="DATABASE" android:value="eventos.db" />
+        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.erroronserver.eventosdecaridade.model" />
+
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -26,7 +34,8 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ContatoActivity" />
-        <activity android:name=".MarcarColetaActivity"></activity>
+        <activity android:name=".MarcarColetaActivity" />
+        <activity android:name=".EventoActivity"></activity>
     </application>
 
 </manifest>
