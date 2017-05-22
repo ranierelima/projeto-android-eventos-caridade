@@ -4,36 +4,40 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.erroronserver.eventosdecaridade.adapter.ListaEventosAdapter;
 import com.erroronserver.eventosdecaridade.controller.EventosController;
 import com.erroronserver.eventosdecaridade.model.Evento;
-import com.erroronserver.eventosdecaridade.model.ResponseJSON;
-import com.erroronserver.eventosdecaridade.service.LoginService;
+import com.erroronserver.eventosdecaridade.model.EventoTO;
 import com.erroronserver.eventosdecaridade.util.Constantes;
 import com.erroronserver.eventosdecaridade.util.SharedPreferencesFactory;
-import com.erroronserver.eventosdecaridade.util.VerificaConexao;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -47,8 +51,12 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.lv_eventos)
     ListView listaEventos;
+
+    MainActivity mainActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mainActivity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -76,7 +84,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        new GetEventosHTTP().execute();
+
+        getEventosHTTP();
        /* boolean temConexao = new VerificaConexao(MainActivity.this).verificaConexao();
         if(temConexao){
             excluirEventos();
@@ -87,30 +96,86 @@ public class MainActivity extends AppCompatActivity
         }*/
     }
 
+    private void getEventosHTTP() {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(Constantes.URL_EVENTOS).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("error104", e.getMessage());
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, Constantes.ERROR_API_GET_EVENTOS, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            responseJSON = response.body().string();
+                            tratarEventos();
+                        } catch (IOException e) {
+                            Log.e("error", "Erro ao pegar lista de eventos na API");
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
 
     private void tratarEventos() {
 
         Gson gson = new Gson();
-        ArrayList<Evento> eventos = (ArrayList<Evento>) gson.fromJson(this.responseJSON, new TypeToken<List<Evento>>() {
-        }.getType());
+        ArrayList<Evento> eventos = convertTO( (ArrayList<EventoTO>) gson.fromJson(this.responseJSON, new TypeToken<List<EventoTO>>() {
+        }.getType()) );
 
 //        salvaListaEmBanco(eventos);
         EventosController.getInstance().setListaEventos(eventos);
         listaEventos.setAdapter(new ListaEventosAdapter(eventos, this));
     }
 
+    private ArrayList<Evento> convertTO(ArrayList<EventoTO> eventoTOs) {
+        ArrayList<Evento> retorno = new ArrayList<>();
+        for(EventoTO eTO : eventoTOs){
+            try {
+                Evento evento = new Evento();
+                evento.setId(eTO.getId());
+                evento.setDescricao(eTO.getDescricao());
+                evento.setLatitude(Double.parseDouble(eTO.getLatitude()));
+                evento.setLongitude(Double.parseDouble(eTO.getLongitude()));
+                evento.setTipoEvento(eTO.getTipoEvento());
+
+                Calendar instance = Calendar.getInstance(TimeZone.getDefault());
+                instance.setTime(new Date( Long.parseLong(eTO.getDataEvento()) ));
+
+                evento.setDataEvento(instance.getTime());
+                retorno.add(evento);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return retorno;
+    }
+
     private void salvaListaEmBanco(ArrayList<Evento> eventos) {
         for (Evento e : eventos){
-            e.save();
+//            e.save();
         }
     }
 
 
     private void excluirEventos() {
-        List<Evento> eventos = Evento.listAll(Evento.class);
-        for (Evento e : eventos){
-            e.delete();
-        }
+//        List<Evento> eventos = Evento.listAll(Evento.class);
+//        for (Evento e : eventos){
+//            e.delete();
+//        }
     }
 
     @Override

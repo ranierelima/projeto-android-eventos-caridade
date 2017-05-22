@@ -1,0 +1,23 @@
+package com.erroronserver.eventosdecaridade.model.enumerations;
+
+import com.erroronserver.eventosdecaridade.util.Constantes;
+
+/**
+ * Created by Raniere de Lima - contato@erroronserver.com on 21/05/2017.
+ */
+public enum EnumTipoEvento {
+
+    EVENTO_DOACAO_ROUPA(1, Constantes.LABEL_DOACAO_ROUPA, Constantes.DESCRICAO_DOACAO_ROUPA),
+    EVENTO_DOACA0_ALIMENTACAO(2, Constantes.LABEL_DOACA0_ALIMENTACAO, Constantes.DESCRICAO_DOACA0_ALIMENTACAO),
+    EVENTO_ALIMENTANDO_NECESSITADOS(3, Constantes.LABEL_ALIMENTE_NECESSITADOS, Constantes.DESCRICAO_ALIMENTE_NECESSITADOS);
+
+    private int id;
+    private String nomeExibicao;
+    private String descricao;
+
+    private EnumTipoEvento(int id, String nomeExibicao, String descricao ){
+        this.id = id;
+        this.descricao = descricao;
+        this.nomeExibicao = nomeExibicao;
+    }
+}

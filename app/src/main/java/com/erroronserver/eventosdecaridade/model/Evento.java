@@ -1,74 +1,68 @@
 package com.erroronserver.eventosdecaridade.model;
 
-import com.orm.SugarRecord;
+import android.util.Log;
+
+import com.erroronserver.eventosdecaridade.model.enumerations.EnumTipoEvento;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Raniere de Lima - contato@erroronserver.com on 02/05/2017.
  */
 
-public class Evento extends SugarRecord{
+public class Evento extends AbstractIdentificavel implements Serializable{
 
-    private Integer cep;
-    private String cidade;
-    private String estado;
-    private String bairro;
-    private String rua;
-    private String numero;
-    private String data;
 
-    public Integer getCep() {
-        return cep;
+    /*public static String COLUMN_TIPO_EVENTO = "tipoEvento";
+    public static String COLUMN_DATA_EVENTO = "dataEvento";
+    public static String COLUMN_LATITUDE = "latitude";
+    public static String COLUMN_LONGITUDE = "longitude";
+    public static String COLUMN_DESCRICAO = "descricao";*/
+
+    private EnumTipoEvento tipoEvento;
+    private Date dataEvento;
+    private double latitude;
+    private double longitude;
+    private String descricao;
+
+    public EnumTipoEvento getTipoEvento() {
+        return tipoEvento;
     }
 
-    public void setCep(Integer cep) {
-        this.cep = cep;
+    public void setTipoEvento(EnumTipoEvento tipoEvento) {
+        this.tipoEvento = tipoEvento;
     }
 
-    public String getCidade() {
-        return cidade;
+    public Date getDataEvento() {
+        return dataEvento;
     }
 
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setDataEvento(Date dataEvento) {
+        this.dataEvento = dataEvento;
     }
 
-    public String getEstado() {
-        return estado;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public String getBairro() {
-        return bairro;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
-    public String getRua() {
-        return rua;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

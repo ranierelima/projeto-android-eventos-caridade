@@ -11,6 +11,7 @@ import java.util.List;
 public class EventosController {
 
     private static EventosController eventosController;
+    private Evento evento;
     private List<Evento> eventos;
     private EventosController(){}
 
@@ -24,6 +25,15 @@ public class EventosController {
 
     public void setListaEventos(List<Evento> eventos){
         this.eventos = eventos;
+    }
+
+    public void setEventoById(Integer id){
+        for(Evento e : eventos){
+            if(e.getId().equals(id)){
+                this.evento = e;
+                break;
+            }
+        }
     }
 
     public Evento getById(Integer id){

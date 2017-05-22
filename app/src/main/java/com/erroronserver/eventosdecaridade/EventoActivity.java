@@ -1,5 +1,6 @@
 package com.erroronserver.eventosdecaridade;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -19,16 +20,16 @@ public class EventoActivity extends AppCompatActivity {
     TextView dataEvento;
     @BindView(R.id.tv_evento_endereco)
     TextView endereco;
+    private Evento evento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
         ButterKnife.bind(this);
-        Bundle extras = getIntent().getExtras();
-        int anInt = extras.getInt(Constantes.INTENT_EVENTO);
-        Evento evento = EventosController.getInstance().getById(anInt);
-        dataEvento.setText(evento.getData());
-        endereco.setText( "Cep:" + evento.getCep() + " Bairro:" + evento.getRua());
+
+        Intent intent = getIntent();
+        evento = (Evento) intent.getSerializableExtra(Constantes.INTENT_EVENTO);
+        dataEvento.setText(evento.getDataEvento().toString());
     }
 }

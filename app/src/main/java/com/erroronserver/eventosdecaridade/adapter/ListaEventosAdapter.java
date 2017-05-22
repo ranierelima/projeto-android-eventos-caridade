@@ -58,13 +58,13 @@ public class ListaEventosAdapter extends BaseAdapter {
 
         TextView dtEvento = (TextView) view.findViewById(R.id.dt_evento);
 
-        dtEvento.setText(evento.getData());
+        dtEvento.setText(evento.getDataEvento().toString());
 
         dtEvento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity.getBaseContext(), EventoActivity.class);
-                intent.putExtra(Constantes.INTENT_EVENTO, evento.getId());
+                intent.putExtra(Constantes.INTENT_EVENTO, evento);
                 activity.startActivity(intent);
             }
         });
