@@ -9,6 +9,9 @@ import com.erroronserver.eventosdecaridade.database.EventoCaridadeDBContract;
 import com.erroronserver.eventosdecaridade.database.EventoCaridadeDBHelper;
 import com.erroronserver.eventosdecaridade.model.AbstractIdentificavel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Raniere de Lima - contato@erroronserver.com on 17/05/2017.
  */
@@ -90,6 +93,32 @@ public abstract class AbstractDAO<T extends AbstractIdentificavel> {
         db.close();
 
         return object;
+    }
+
+    public synchronized List<T> listar() {
+        List<T> listaRetorno = new ArrayList<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String sql = String.format("select * from %s",
+                getTableName());
+        Cursor cursor = db.rawQuery(sql, null);
+
+        while (cursor.moveToNext()) {
+            T object = null;
+            try {
+                object = clazz.newInstance();
+                fillObject(object, cursor);
+                listaRetorno.add(object);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        db.close();
+
+        return listaRetorno;
     }
 
 }

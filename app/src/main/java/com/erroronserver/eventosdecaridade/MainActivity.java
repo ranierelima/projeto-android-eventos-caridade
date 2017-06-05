@@ -20,10 +20,12 @@ import android.widget.Toast;
 
 import com.erroronserver.eventosdecaridade.adapter.ListaEventosAdapter;
 import com.erroronserver.eventosdecaridade.controller.EventosController;
+import com.erroronserver.eventosdecaridade.dao.EventoDAO;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.model.EventoTO;
 import com.erroronserver.eventosdecaridade.util.Constantes;
 import com.erroronserver.eventosdecaridade.util.SharedPreferencesFactory;
+import com.erroronserver.eventosdecaridade.util.VerificaConexao;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 
     MainActivity mainActivity;
 
+    private EventoDAO eventoDAO = new EventoDAO();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mainActivity = this;
@@ -69,8 +73,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+               /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                startActivity(new Intent(MainActivity.this , MapsActivity.class));
             }
         });
 
@@ -83,17 +88,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-        getEventosHTTP();
-       /* boolean temConexao = new VerificaConexao(MainActivity.this).verificaConexao();
+        boolean temConexao = new VerificaConexao(MainActivity.this).verificaConexao();
         if(temConexao){
             excluirEventos();
+            getEventosHTTP();
         }else{
-            List<Evento> eventos = Evento.listAll(Evento.class);
+            List<Evento> eventos = eventoDAO.listar();
             EventosController.getInstance().setListaEventos(eventos);
             listaEventos.setAdapter(new ListaEventosAdapter(eventos, this));
-        }*/
+        }
     }
 
     private void getEventosHTTP() {
@@ -136,7 +139,7 @@ public class MainActivity extends AppCompatActivity
         ArrayList<Evento> eventos = convertTO( (ArrayList<EventoTO>) gson.fromJson(this.responseJSON, new TypeToken<List<EventoTO>>() {
         }.getType()) );
 
-//        salvaListaEmBanco(eventos);
+        salvaListaEmBanco(eventos);
         EventosController.getInstance().setListaEventos(eventos);
         listaEventos.setAdapter(new ListaEventosAdapter(eventos, this));
     }
@@ -166,7 +169,7 @@ public class MainActivity extends AppCompatActivity
 
     private void salvaListaEmBanco(ArrayList<Evento> eventos) {
         for (Evento e : eventos){
-//            e.save();
+            eventoDAO.insertOrUpdate(e);
         }
     }
 

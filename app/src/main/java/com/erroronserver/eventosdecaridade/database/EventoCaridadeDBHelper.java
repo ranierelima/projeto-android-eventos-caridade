@@ -42,8 +42,7 @@ public class EventoCaridadeDBHelper extends SQLiteOpenHelper {
                         "%s DATETIME, " + //COLUMN_DATA_EVENTO
                         "%s INTEGER, " + //COLUMN_LATITUDE
                         "%s INTEGER, " + //COLUMN_LONGITUDE
-                        "%s TEXT, " + //COLUMN_DESCRICAO
-                        "%s INTEGER) ", //COLUMN_ATIVO
+                        "%s TEXT) ",  //COLUMN_DESCRICAO
                 EventoCaridadeDBContract.Evento.TABLE_NAME,
                 EventoCaridadeDBContract.Evento.COLUMN_ID,
                 EventoCaridadeDBContract.Evento.COLUMN_TIPO_EVENTO,
