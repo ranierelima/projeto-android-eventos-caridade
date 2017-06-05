@@ -29,7 +29,19 @@
         android:padding="10dp"/>
 
     <TextView
+        android:id="@+id/tv_evento_descricao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker."/>
+        android:text="Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e
+        de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido
+         pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem
+         Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica
+         , permanecendo essencialmente inalterado."/>
+
+    <Button
+        android:id="@+id/btn_evento_mapa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ver no Mapa"/>
+
 </LinearLayout>

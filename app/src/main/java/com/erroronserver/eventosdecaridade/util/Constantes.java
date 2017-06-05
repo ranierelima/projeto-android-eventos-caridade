@@ -11,6 +11,8 @@ public class Constantes {
     public static final String PREF_FILE_NAME = "EventoCaridadeCONFIG";
     public static final String TOKEN = "TokenApp";
     public static final String INTENT_EVENTO = "idEvento";
+    public static final String INTENT_MAPA_LATITUDE = "eventoMapaLatitude";
+    public static final String INTENT_MAPA_LONGITUDE = "eventoMapaLongitude";
     public static final String ERROR_API_LOGIN = "Ocorreu um erro na tentativa de login";
     public static final String ERROR_API_GET_EVENTOS = "Ocorreu um erro ao pegar os eventos";
 
