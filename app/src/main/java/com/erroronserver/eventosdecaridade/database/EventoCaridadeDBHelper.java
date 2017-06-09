@@ -40,8 +40,8 @@ public class EventoCaridadeDBHelper extends SQLiteOpenHelper {
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT, " + //COLUMN_ID
                         "%s TEXT, " + //COLUMN_TIPO_EVENTO
                         "%s DATETIME, " + //COLUMN_DATA_EVENTO
-                        "%s INTEGER, " + //COLUMN_LATITUDE
-                        "%s INTEGER, " + //COLUMN_LONGITUDE
+                        "%s TEXT, " + //COLUMN_LATITUDE
+                        "%s TEXT, " + //COLUMN_LONGITUDE
                         "%s TEXT) ",  //COLUMN_DESCRICAO
                 EventoCaridadeDBContract.Evento.TABLE_NAME,
                 EventoCaridadeDBContract.Evento.COLUMN_ID,

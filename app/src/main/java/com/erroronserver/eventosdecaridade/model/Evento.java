@@ -65,4 +65,12 @@ public class Evento extends AbstractIdentificavel implements Serializable{
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    public void setId(int anInt) {
+        this.setId( Long.parseLong( String.valueOf(anInt) ) );
+    }
+
+    public void setDataEvento(String dataEvento) {
+        this.setDataEvento( new Date( Long.parseLong( dataEvento ) ) );
+    }
 }

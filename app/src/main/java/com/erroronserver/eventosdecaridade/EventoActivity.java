@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.erroronserver.eventosdecaridade.controller.EventosController;
+import com.erroronserver.eventosdecaridade.controller.MapsController;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.util.Constantes;
 import com.google.android.gms.maps.model.LatLng;
@@ -57,9 +58,7 @@ public class EventoActivity extends AppCompatActivity {
     @OnClick(R.id.btn_evento_mapa)
     public void abrirMapa(){
 
-        Intent irparaMapa = new Intent(EventoActivity.this, MapsActivity.class);
-        irparaMapa.putExtra(Constantes.INTENT_MAPA_LATITUDE, evento.getLatitude());
-        irparaMapa.putExtra(Constantes.INTENT_MAPA_LONGITUDE, evento.getLongitude());
-        startActivity(irparaMapa);
+        MapsController.getInstance().setEvento(evento);
+        startActivity(new Intent(EventoActivity.this, MapsActivity.class));
     }
 }

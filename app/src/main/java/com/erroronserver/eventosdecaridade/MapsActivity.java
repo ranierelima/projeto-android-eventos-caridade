@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.location.Address;
 
+import com.erroronserver.eventosdecaridade.controller.MapsController;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.util.Constantes;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private LatLng latLng;
     private boolean podeMudarLocal = true;
+    private Evento evento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +67,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
 
-        /*Intent intent = getIntent();
-        double latitude = intent.getParcelableExtra(Constantes.INTENT_MAPA_LATITUDE);
-        double longitude = intent.getParcelableExtra(Constantes.INTENT_MAPA_LONGITUDE);
-        LatLng byIntent = new LatLng(latitude, longitude);
-        if(byIntent == null) {*/
-        LatLng byIntent = new LatLng(-7.158825, -34.854829);
-            mMap.addMarker(new MarkerOptions().position(byIntent).title("Você está em João Pessoa").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
-        /*}else{
+        evento = MapsController.getInstance().getEvento();
+        String mensagemExibicao = null;
+        LatLng byIntent = null;
+
+        if(evento == null) {
+
+            byIntent = new LatLng(-7.158825, -34.854829);
+            podeMudarLocal = true;
+            mensagemExibicao = "Você está em João Pessoa";
+
+        }else{
+
+            byIntent = new LatLng(evento.getLatitude(), evento.getLongitude());
             podeMudarLocal = false;
-            mMap.addMarker(new MarkerOptions().position(byIntent).title("Local do Evento").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
-        }*/
+            mensagemExibicao = "Local do Evento";
+
+        }
+
+        mMap.addMarker(new MarkerOptions().position(byIntent).title(mensagemExibicao).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(byIntent));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(byIntent, 17.0f));
         mMap.setOnMapClickListener(this);
