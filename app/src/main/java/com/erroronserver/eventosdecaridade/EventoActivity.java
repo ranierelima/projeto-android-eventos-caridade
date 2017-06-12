@@ -10,6 +10,7 @@ import com.erroronserver.eventosdecaridade.controller.EventosController;
 import com.erroronserver.eventosdecaridade.controller.MapsController;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.util.Constantes;
+import com.erroronserver.eventosdecaridade.util.VerificaConexao;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.w3c.dom.Text;
@@ -20,6 +21,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class EventoActivity extends AppCompatActivity {
 
@@ -58,7 +60,18 @@ public class EventoActivity extends AppCompatActivity {
     @OnClick(R.id.btn_evento_mapa)
     public void abrirMapa(){
 
-        MapsController.getInstance().setEvento(evento);
-        startActivity(new Intent(EventoActivity.this, MapsActivity.class));
+        boolean conexao = new VerificaConexao(EventoActivity.this).verificaConexao();
+        if(conexao){
+
+            MapsController.getInstance().setEvento(evento);
+            startActivity(new Intent(EventoActivity.this, MapsActivity.class));
+
+        }else{
+
+            new SweetAlertDialog(EventoActivity.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Sem conexão")
+                    .setContentText("Para visualizar o local no mapa, é necessário ter conexão com a internet").show();
+
+        }
     }
 }

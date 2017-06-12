@@ -36,15 +36,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:text="@string/label_data_evento"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_evento_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Clique aqui e informe a hora"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:text="Descreva brevemente o evento"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"/>
 
     <EditText
+        android:id="@+id/et_descricao_evento"
         android:layout_weight="7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Digiite aqui"
+        android:hint="Digite aqui"
         android:textAlignment="center"/>
 
     <LinearLayout

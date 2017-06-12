@@ -2,6 +2,7 @@ package com.erroronserver.eventosdecaridade.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.erroronserver.eventosdecaridade.database.EventoCaridadeDBContract;
 import com.erroronserver.eventosdecaridade.model.Evento;
@@ -33,8 +34,8 @@ public class EventoDAO extends AbstractDAO<Evento> {
         object.setId( cursor.getInt(cursor.getColumnIndex( EventoCaridadeDBContract.Evento.COLUMN_ID )) );
         object.setDataEvento( cursor.getString(cursor.getColumnIndex( EventoCaridadeDBContract.Evento.COLUMN_DATA_EVENTO )) );
         object.setDescricao( cursor.getString(cursor.getColumnIndex( EventoCaridadeDBContract.Evento.COLUMN_DESCRICAO )) );
-        object.setLatitude( Long.parseLong( cursor.getString( cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_LATITUDE ) ) ) );
-        object.setLongitude( Long.parseLong( cursor.getString(cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_LONGITUDE) ) ) );
+        object.setLatitude( Double.parseDouble( cursor.getString( cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_LATITUDE ) ) )  );
+        object.setLongitude( Double.parseDouble( cursor.getString(cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_LONGITUDE) ) ) );
         object.setTipoEvento( EnumTipoEvento.valueOf( cursor.getString( cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_TIPO_EVENTO) )  ));
 
     }
