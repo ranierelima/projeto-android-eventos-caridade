@@ -2,6 +2,9 @@ package com.erroronserver.eventosdecaridade.model.enumerations;
 
 import com.erroronserver.eventosdecaridade.util.Constantes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Raniere de Lima - contato@erroronserver.com on 21/05/2017.
  */
@@ -19,5 +22,14 @@ public enum EnumTipoEvento {
         this.id = id;
         this.descricao = descricao;
         this.nomeExibicao = nomeExibicao;
+    }
+
+    public static List<String> getAll(){
+        List<String> retorno = new ArrayList<>();
+        for(EnumTipoEvento e : EnumTipoEvento.values()){
+            retorno.add(e.nomeExibicao);
+        }
+
+        return retorno;
     }
 }

@@ -21,4 +21,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Maps</string>
+    <string name="label_descricao_marcar_evento">Deseja marcar uma coleta de roupas em seu endereço</string>
+    <string name="label_info_tipo_evento">Informe o tipo do evento.</string>
 </resources>
