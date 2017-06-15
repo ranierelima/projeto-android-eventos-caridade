@@ -22,9 +22,10 @@ public class Evento extends AbstractIdentificavel implements Serializable{
 
     private EnumTipoEvento tipoEvento;
     private Date dataEvento;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private String descricao;
+    private boolean manual;
 
     public EnumTipoEvento getTipoEvento() {
         return tipoEvento;
@@ -42,19 +43,19 @@ public class Evento extends AbstractIdentificavel implements Serializable{
         this.dataEvento = dataEvento;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -72,5 +73,13 @@ public class Evento extends AbstractIdentificavel implements Serializable{
 
     public void setDataEvento(String dataEvento) {
         this.setDataEvento( new Date( Long.parseLong( dataEvento ) ) );
+    }
+
+    public boolean isManual() {
+        return manual;
+    }
+
+    public void setManual(boolean manual) {
+        this.manual = manual;
     }
 }

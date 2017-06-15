@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.location.Address;
+import android.widget.Toast;
 
 import com.erroronserver.eventosdecaridade.controller.MapsController;
+import com.erroronserver.eventosdecaridade.dao.EventoDAO;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.util.Constantes;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,6 +22,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
@@ -66,23 +70,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
+        podeMudarLocal = MapsController.getInstance().isAdicao();
 
         evento = MapsController.getInstance().getEvento();
+
         String mensagemExibicao = null;
         LatLng byIntent = null;
 
-        if(evento == null) {
-
+        if(evento.getLatitude() == null || evento.getLongitude() == null) {
             byIntent = new LatLng(-7.158825, -34.854829);
-            podeMudarLocal = true;
             mensagemExibicao = "Você está em João Pessoa";
-
         }else{
-
             byIntent = new LatLng(evento.getLatitude(), evento.getLongitude());
-            podeMudarLocal = false;
             mensagemExibicao = "Local do Evento";
-
         }
 
         mMap.addMarker(new MarkerOptions().position(byIntent).title(mensagemExibicao).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
@@ -95,7 +95,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(LatLng latLng) {
         if(podeMudarLocal){
             this.latLng = latLng;
+
+            evento.setLatitude(latLng.latitude);
+            evento.setLongitude(latLng.longitude);
+
             new ReverseCode().execute();
+        }
+    }
+
+
+    private void adicionarEvento() {
+        if(podeMudarLocal) {
+            new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                    .setTitleText("Local selecionado")
+                    .setContentText("Deseja marcar esse lugar como o local do evento?")
+                    .setConfirmText("Sim")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            evento.setManual(true);
+                            new EventoDAO().insertOrUpdate(evento);
+                            startActivity(new Intent(MapsActivity.this, MainActivity.class));
+                        }
+                    })
+                    .setCancelText("Não")
+                    .show();
         }
     }
 
@@ -108,6 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 List<android.location.Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                 return location.get(0);
             } catch (IOException e) {
+                Toast.makeText(MapsActivity.this, "Não foi possivel obter o endereço", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             return null;
@@ -119,6 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.clear();
                 mMap.addMarker(createMarker(latLng, address.getThoroughfare(), address.getLocality()));
                 configMap(mMap, latLng, GoogleMap.MAP_TYPE_NORMAL);
+                adicionarEvento();
             }
         }
     }

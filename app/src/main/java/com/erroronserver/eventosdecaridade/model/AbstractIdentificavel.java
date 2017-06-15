@@ -5,7 +5,7 @@ package com.erroronserver.eventosdecaridade.model;
  */
 
 public class AbstractIdentificavel {
-    public Long id;
+    public long id;
 
     public Long getId(){
         return this.id;

@@ -2,6 +2,7 @@ package com.erroronserver.eventosdecaridade.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.erroronserver.eventosdecaridade.database.EventoCaridadeDBContract;
@@ -26,6 +27,7 @@ public class EventoDAO extends AbstractDAO<Evento> {
         content.put(EventoCaridadeDBContract.Evento.COLUMN_LATITUDE, String.valueOf( object.getLatitude() ) );
         content.put(EventoCaridadeDBContract.Evento.COLUMN_LONGITUDE, String.valueOf( object.getLongitude() ) );
         content.put(EventoCaridadeDBContract.Evento.COLUMN_TIPO_EVENTO, String.valueOf( object.getTipoEvento() ) );
+        content.put(EventoCaridadeDBContract.Evento.COLUMN_MANUAL, object.isManual() ? 1 : 0 );
     }
 
     @Override
@@ -37,11 +39,25 @@ public class EventoDAO extends AbstractDAO<Evento> {
         object.setLatitude( Double.parseDouble( cursor.getString( cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_LATITUDE ) ) )  );
         object.setLongitude( Double.parseDouble( cursor.getString(cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_LONGITUDE) ) ) );
         object.setTipoEvento( EnumTipoEvento.valueOf( cursor.getString( cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_TIPO_EVENTO) )  ));
+        object.setManual( cursor.getInt( cursor.getColumnIndex(EventoCaridadeDBContract.Evento.COLUMN_MANUAL) ) == 1 ? true : false  );
 
     }
 
     @Override
     protected String getTableName() {
         return EventoCaridadeDBContract.Evento.TABLE_NAME;
+    }
+
+
+
+    public synchronized boolean deleteForApi() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        boolean deleted = db.delete(getTableName(), String.format("%s = ?", EventoCaridadeDBContract.Evento.COLUMN_MANUAL),
+                new String[] { String.valueOf( 0 ) }) == 1;
+
+        db.close();
+
+        return deleted;
     }
 }

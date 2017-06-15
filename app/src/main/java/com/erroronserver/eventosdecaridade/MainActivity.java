@@ -140,6 +140,10 @@ public class MainActivity extends AppCompatActivity
         }.getType()) );
 
         salvaListaEmBanco(eventos);
+
+
+        eventos = (ArrayList<Evento>) eventoDAO.listar();
+
         EventosController.getInstance().setListaEventos(eventos);
         listaEventos.setAdapter(new ListaEventosAdapter(eventos, this));
     }
@@ -154,6 +158,7 @@ public class MainActivity extends AppCompatActivity
                 evento.setLatitude(Double.parseDouble(eTO.getLatitude()));
                 evento.setLongitude(Double.parseDouble(eTO.getLongitude()));
                 evento.setTipoEvento(eTO.getTipoEvento());
+                evento.setManual(false);
 
                 Calendar instance = Calendar.getInstance(TimeZone.getDefault());
                 instance.setTime(new Date( Long.parseLong(eTO.getDataEvento()) ));
@@ -175,10 +180,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void excluirEventos() {
-//        List<Evento> eventos = Evento.listAll(Evento.class);
-//        for (Evento e : eventos){
-//            e.delete();
-//        }
+        eventoDAO.deleteForApi();
     }
 
     @Override

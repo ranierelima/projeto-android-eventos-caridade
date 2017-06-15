@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -15,9 +16,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.erroronserver.eventosdecaridade.controller.MapsController;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.model.enumerations.EnumTipoEvento;
+import com.google.common.collect.Maps;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +50,8 @@ public class MarcarColetaActivity extends AppCompatActivity implements DatePicke
     Evento evento = new Evento();
     private Calendar timeInMostrar;
 
+    private Calendar calendarEvento = Calendar.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,9 @@ public class MarcarColetaActivity extends AppCompatActivity implements DatePicke
                 android.R.layout.simple_spinner_item, EnumTipoEvento.getAll());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tiposEventos.setAdapter(adapter);
+
+        InputMethodManager imm = (InputMethodManager) MarcarColetaActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(descricao.getWindowToken(), 0);
     }
 
     @Override
@@ -85,9 +94,22 @@ public class MarcarColetaActivity extends AppCompatActivity implements DatePicke
 
     @OnClick(R.id.btn_avanca_evento)
     public void btnAvancar(){
-        Evento evento = new Evento();
-        evento.setDescricao( descricao.getText().toString() );
-//        finish();
+        if( descricao.getText().toString().isEmpty() ||
+            dataEvento.getText().toString().isEmpty() ||
+            horaEvento.getText().toString().isEmpty() ){
+            Toast.makeText(MarcarColetaActivity.this, "Preencha todas as informações", Toast.LENGTH_LONG).show();
+        }else{
+            evento.setDataEvento( calendarEvento.getTime() );
+            evento.setDescricao( descricao.getText().toString() );
+            evento.setLongitude( null );
+            evento.setLatitude( null );
+
+            MapsController.getInstance().setEvento(evento);
+            MapsController.getInstance().isAdicao(true);
+
+            startActivity( new Intent(MarcarColetaActivity.this, MapsActivity.class));
+            finish();
+        }
     }
 
 
@@ -128,23 +150,17 @@ public class MarcarColetaActivity extends AppCompatActivity implements DatePicke
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         TimeZone tz = TimeZone.getDefault();
         TimeZone.setDefault(tz);
-        Calendar instance = GregorianCalendar.getInstance(tz);
-        instance.set(Calendar.YEAR, year);
-        instance.set(Calendar.MONTH, monthOfYear);
-        instance.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        evento.setDataEvento(instance.getTime());
+        calendarEvento.set(Calendar.YEAR, year);
+        calendarEvento.set(Calendar.MONTH, monthOfYear);
+        calendarEvento.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
         dataEvento.setText( dayOfMonth + "/" + monthOfYear + "/" + year);
     }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int horas, int minutos) {
-        Date dataEvento = evento.getDataEvento();
-        Calendar instance = Calendar.getInstance();
-        instance.setTime(dataEvento);
-
-        instance.set(Calendar.HOUR_OF_DAY, horas);
-        instance.set(Calendar.MINUTE, minutos);
+        calendarEvento.set(Calendar.HOUR_OF_DAY, horas);
+        calendarEvento.set(Calendar.MINUTE, minutos);
 
         horaEvento.setText( horas + ":" + minutos );
     }

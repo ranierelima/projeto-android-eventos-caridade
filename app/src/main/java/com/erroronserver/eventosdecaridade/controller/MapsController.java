@@ -11,7 +11,11 @@ import java.util.List;
 public class MapsController {
 
     private static MapsController instance;
+
     private Evento evento;
+
+    private boolean isAdicao = false;
+
     private MapsController(){}
 
     public static MapsController getInstance(){
@@ -28,5 +32,13 @@ public class MapsController {
 
     public void setEvento(Evento evento) {
         this.evento = evento;
+    }
+
+    public void isAdicao(boolean adicao) {
+        this.isAdicao = adicao;
+    }
+
+    public boolean isAdicao() {
+        return this.isAdicao;
     }
 }

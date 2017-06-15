@@ -42,14 +42,16 @@ public class EventoCaridadeDBHelper extends SQLiteOpenHelper {
                         "%s DATETIME, " + //COLUMN_DATA_EVENTO
                         "%s TEXT, " + //COLUMN_LATITUDE
                         "%s TEXT, " + //COLUMN_LONGITUDE
-                        "%s TEXT) ",  //COLUMN_DESCRICAO
+                        "%s TEXT," + //COLUMN_DESCRICAO
+                        "%s INTEGER) ", //COLUMN_MANUAL
                 EventoCaridadeDBContract.Evento.TABLE_NAME,
                 EventoCaridadeDBContract.Evento.COLUMN_ID,
                 EventoCaridadeDBContract.Evento.COLUMN_TIPO_EVENTO,
                 EventoCaridadeDBContract.Evento.COLUMN_DATA_EVENTO,
                 EventoCaridadeDBContract.Evento.COLUMN_LATITUDE,
                 EventoCaridadeDBContract.Evento.COLUMN_LONGITUDE,
-                EventoCaridadeDBContract.Evento.COLUMN_DESCRICAO
+                EventoCaridadeDBContract.Evento.COLUMN_DESCRICAO,
+                EventoCaridadeDBContract.Evento.COLUMN_MANUAL
         ));
     }
 

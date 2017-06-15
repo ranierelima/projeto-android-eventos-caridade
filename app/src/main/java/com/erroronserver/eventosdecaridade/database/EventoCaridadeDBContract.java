@@ -14,6 +14,7 @@ public class EventoCaridadeDBContract {
         public static String COLUMN_LATITUDE = "latitude";
         public static String COLUMN_LONGITUDE = "longitude";
         public static String COLUMN_DESCRICAO = "descricao";
+        public static String COLUMN_MANUAL = "isManual";
     }
 
     public static final class Contato extends TableContract {
