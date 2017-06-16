@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.erroronserver.eventosdecaridade.controller.MapsController;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.model.enumerations.EnumTipoEvento;
+import com.erroronserver.eventosdecaridade.util.VerificaConexao;
 import com.google.common.collect.Maps;
 
 import java.util.Calendar;
@@ -32,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MarcarColetaActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener {
 
@@ -97,8 +99,18 @@ public class MarcarColetaActivity extends AppCompatActivity implements DatePicke
         if( descricao.getText().toString().isEmpty() ||
             dataEvento.getText().toString().isEmpty() ||
             horaEvento.getText().toString().isEmpty() ){
-            Toast.makeText(MarcarColetaActivity.this, "Preencha todas as informações", Toast.LENGTH_LONG).show();
-        }else{
+
+            new SweetAlertDialog(MarcarColetaActivity.this, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("Campos vazios")
+                    .setContentText("Preencha todas as informações para continuar").show();
+
+        } else if( !new VerificaConexao(MarcarColetaActivity.this).verificaConexao()){
+
+            new SweetAlertDialog(MarcarColetaActivity.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Sem conexão")
+                    .setContentText("Para continuar, é necessário ter conexão com a internet").show();
+
+        } else{
             evento.setDataEvento( calendarEvento.getTime() );
             evento.setDescricao( descricao.getText().toString() );
             evento.setLongitude( null );
