@@ -65,6 +65,8 @@ public class MarcarColetaActivity extends AppCompatActivity implements DatePicke
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tiposEventos.setAdapter(adapter);
 
+        evento.setId(null);
+
         InputMethodManager imm = (InputMethodManager) MarcarColetaActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(descricao.getWindowToken(), 0);
     }

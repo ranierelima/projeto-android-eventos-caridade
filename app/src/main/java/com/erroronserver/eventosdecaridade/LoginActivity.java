@@ -25,6 +25,7 @@ import com.erroronserver.eventosdecaridade.model.Usuario;
 import com.erroronserver.eventosdecaridade.service.LoginService;
 import com.erroronserver.eventosdecaridade.util.Constantes;
 import com.erroronserver.eventosdecaridade.util.SharedPreferencesFactory;
+import com.erroronserver.eventosdecaridade.util.VerificaConexao;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -93,44 +94,50 @@ public class LoginActivity extends AppCompatActivity {
 
         inputMethodManager.hideSoftInputFromWindow(mPasswordView.getWindowToken(), 0);
 
+        boolean verificaConexao = new VerificaConexao(LoginActivity.this).verificaConexao();
+        if(verificaConexao){
+            progressBar.setVisibility(View.VISIBLE);
+            OkHttpClient client = new OkHttpClient();
+            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            Request request = new Request.Builder().url(Constantes.URL_LOGIN)
+                    .post(RequestBody.create(JSON, parseUserToJSON())).build();
 
-        progressBar.setVisibility(View.VISIBLE);
-        OkHttpClient client = new OkHttpClient();
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        Request request = new Request.Builder().url(Constantes.URL_LOGIN)
-                .post(RequestBody.create(JSON, parseUserToJSON())).build();
 
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                loginActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("Erro")
-                                .setContentText(Constantes.ERROR_API_LOGIN ).show();
-                    }
-                });
-//                Toast.makeText(LoginActivity.this, , Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                loginActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            responseJSON  = response.body().string();
-                        } catch (IOException e) {
-                            Log.e("error", "Login Acitivty, conversão response.body.toString");
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    loginActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Erro")
+                                    .setContentText(Constantes.ERROR_API_LOGIN ).show();
                         }
-                        validacaoResposta();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
-            }
-        });
+                    });
+    //                Toast.makeText(LoginActivity.this, , Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onResponse(Call call, final Response response) throws IOException {
+                    loginActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                responseJSON  = response.body().string();
+                            } catch (IOException e) {
+                                Log.e("error", "Login Acitivty, conversão response.body.toString");
+                            }
+                            validacaoResposta();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            });
+        }else{
+            Toast.makeText(LoginActivity.this,
+                    "Para realizar o login é necessário ter internet",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
 
