@@ -14,9 +14,9 @@ public enum EnumTipoEvento {
     EVENTO_DOACA0_ALIMENTACAO(2, Constantes.LABEL_DOACA0_ALIMENTACAO, Constantes.DESCRICAO_DOACA0_ALIMENTACAO),
     EVENTO_ALIMENTANDO_NECESSITADOS(3, Constantes.LABEL_ALIMENTE_NECESSITADOS, Constantes.DESCRICAO_ALIMENTE_NECESSITADOS);
 
-    private int id;
-    private String nomeExibicao;
-    private String descricao;
+    public int id;
+    public String nomeExibicao;
+    public String descricao;
 
     private EnumTipoEvento(int id, String nomeExibicao, String descricao ){
         this.id = id;

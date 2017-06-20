@@ -13,8 +13,10 @@ import com.erroronserver.eventosdecaridade.EventoActivity;
 import com.erroronserver.eventosdecaridade.R;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.util.Constantes;
+import com.erroronserver.eventosdecaridade.util.DateUtil;
 
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Raniere de Lima - contato@erroronserver.com on 02/05/2017.
@@ -58,7 +60,7 @@ public class ListaEventosAdapter extends BaseAdapter {
 
         TextView dtEvento = (TextView) view.findViewById(R.id.dt_evento);
 
-        dtEvento.setText(evento.getDataEvento().toString());
+        dtEvento.setText(DateUtil.convertDateToStringInTimeZone(evento.getDataEvento(), TimeZone.getDefault().toString()));
 
         dtEvento.setOnClickListener(new View.OnClickListener() {
             @Override

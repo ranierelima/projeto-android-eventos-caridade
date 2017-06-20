@@ -13,20 +13,22 @@
 
 
     <TextView
-        android:id="@+id/tv_evento_endereco"
+        android:id="@+id/tv_evento_tipo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="18sp"
-        android:padding="10dp"/>
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:text="aaaa"/>
 
     <TextView
         android:id="@+id/tv_evento_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="18sp"
-        android:padding="10dp"/>
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:text="aaaa"/>
 
     <TextView
         android:id="@+id/tv_evento_descricao"

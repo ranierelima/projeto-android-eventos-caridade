@@ -10,6 +10,7 @@ import com.erroronserver.eventosdecaridade.controller.EventosController;
 import com.erroronserver.eventosdecaridade.controller.MapsController;
 import com.erroronserver.eventosdecaridade.model.Evento;
 import com.erroronserver.eventosdecaridade.util.Constantes;
+import com.erroronserver.eventosdecaridade.util.DateUtil;
 import com.erroronserver.eventosdecaridade.util.VerificaConexao;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -17,6 +18,7 @@ import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,8 +29,8 @@ public class EventoActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_evento_data)
     TextView dataEvento;
-    @BindView(R.id.tv_evento_endereco)
-    TextView endereco;
+    @BindView(R.id.tv_evento_tipo)
+    TextView tipo;
     @BindView(R.id.tv_evento_descricao)
     TextView descricao;
 
@@ -43,18 +45,11 @@ public class EventoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         evento = (Evento) intent.getSerializableExtra(Constantes.INTENT_EVENTO);
 
-        String dataFormatada = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            dataFormatada = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(evento.getDataEvento());
-        }else{
-            DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-            dataFormatada =  dateFormat.format(evento.getDataEvento());
-        }
-
-        dataEvento.setText(dataFormatada);
+        dataEvento.setText( DateUtil.convertDateToStringInTimeZone(evento.getDataEvento(), TimeZone.getDefault().toString()) );
         if(evento.getDescricao() != null){
             descricao.setText(evento.getDescricao());
         }
+        tipo.setText( evento.getTipoEvento().nomeExibicao );
     }
 
     @OnClick(R.id.btn_evento_mapa)
