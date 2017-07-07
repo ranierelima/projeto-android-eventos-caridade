@@ -36,9 +36,9 @@ public abstract class AbstractDAO<T extends AbstractIdentificavel> {
         ContentValues content = new ContentValues();
         fillContent(content, object);
 
-        long id = object.getId();
+        Long id = object.getId();
 
-        if (id == 0 || db.update(getTableName(), content, String.format("%s = ?", EventoCaridadeDBContract.TableContract.COLUMN_ID),
+        if (id == null ||id == 0 || db.update(getTableName(), content, String.format("%s = ?", EventoCaridadeDBContract.TableContract.COLUMN_ID),
                 new String[] { String.valueOf(id) }) == 0) {
             id = db.insert(getTableName(), null, content);
             if (id > 0) object.setId(id);
