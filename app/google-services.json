@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "198755281090",
+    "firebase_url": "https://projeto-evento-caridade.firebaseio.com",
+    "project_id": "projeto-evento-caridade",
+    "storage_bucket": "projeto-evento-caridade.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198755281090:android:113fb112b19b18da",
+        "android_client_info": {
+          "package_name": "com.erroronserver.eventosdecaridade"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198755281090-kr8o62uvkj2v8fo09podta1d6gb5lf83.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.erroronserver.eventosdecaridade",
+            "certificate_hash": "155be790cddc8940c97c438a5c2c9e79881b14d2"
+          }
+        },
+        {
+          "client_id": "198755281090-ecmbuf99529u9ch257fnbl6ifauln8mf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu2rJ2wDolONtAr6GOk1nuSqeDOSYzhu0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198755281090-ecmbuf99529u9ch257fnbl6ifauln8mf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

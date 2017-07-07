@@ -2,6 +2,7 @@ package com.erroronserver.eventosdecaridade;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
@@ -48,17 +49,19 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     @BindView(R.id.et_login)
     AutoCompleteTextView mEmailView;
+
     @BindView(R.id.et_password)
     EditText mPasswordView;
+
     @BindView(R.id.cb_manterConectado)
     CheckBox manterConectado;
-    @BindView(R.id.progressBar)
-    RelativeLayout progressBar;
+
     @BindView(R.id.btn_login)
     Button btnLoogin;
 
     private String responseJSON;
     LoginActivity loginActivity;
+    private SweetAlertDialog progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        progressBar = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
         if( SharedPreferencesFactory.get(this, Constantes.TOKEN, null) != null ){
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -94,7 +98,12 @@ public class LoginActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(mPasswordView.getWindowToken(), 0);
 
 
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        progressBar.setTitleText("Aguarde");
+        progressBar.setCancelable(false);
+        progressBar.show();
+
+
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         Request request = new Request.Builder().url(Constantes.URL_LOGIN)
@@ -107,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                 loginActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.hide();
                         new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("Erro")
                                 .setContentText(Constantes.ERROR_API_LOGIN ).show();
@@ -126,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.e("error", "Login Acitivty, conversão response.body.toString");
                         }
                         validacaoResposta();
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.hide();
                     }
                 });
             }
